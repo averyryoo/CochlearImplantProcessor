@@ -57,12 +57,12 @@ function signalProcess(fileName)
     % logArray = [2 2.237886 2.475772496 2.713658745 2.951544993 3.189431242 3.42731749 3.665203739 3.903089987];
     logArray = [0.0817 0.172225 0.26275 0.353275 0.4438 0.534325 0.62485 0.715375 0.8059];
     
-    output = zeros(1,467968);
+    output = zeros(1, numel(y));
     timeRange2 = 0:(1/Fs):time-(1/Fs);
     for i=1:length(logArray)-1
         leftGreenwood = 165.4 * (power(10, logArray(i) * 2.1) - 0.88);
         rightGreenwood = 165.4 * (power(10, logArray(i+1) * 2.1) - 0.88);
-        [num, denum] = butter(2, [leftGreenwood rightGreenwood]/(Fs/2));
+        [num, denum] = butter(4, [leftGreenwood rightGreenwood]/(Fs/2));
         filteredSignal = filter(num ,denum, y);
  
 % 
@@ -94,7 +94,7 @@ function signalProcess(fileName)
         
         centerFreq = (rightGreenwood + leftGreenwood)/2;
         
-        figure("Name", fileName);
+        % figure("Name", fileName);
         timeRange2 = 0:(1/Fs):time-(1/Fs);
         cosPlot2 = cos(2*pi*centerFreq*timeRange2);
        
