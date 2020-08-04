@@ -40,32 +40,29 @@ function signalProcess(fileName)
         filteredSignal = filter(num ,denum, y);
       
         %lowpassSignal = lowpass(abs(filteredSignal), 400/(Fs/2));
-        [lowNum, highNum] = butter(4, 400/(Fs/2));
-        %[lowNum, highNum] = butter(4, 100/(Fs/2));
-        %[lowNum, highNum] = butter(4, 2000/(Fs/2));
+        [lowNum, highNum] = butter(12, 400/(Fs/2));
+        %[lowNum, highNum] = butter(12, 200/(Fs/2));
+        %[lowNum, highNum] = butter(12, 1600/(Fs/2));
         lowpassSignal = filter(lowNum, highNum, abs(filteredSignal));
         
         centerFreq = (rightGreenwood + leftGreenwood)/2;
-        
-        
+
         cosPlot2 = cos(2*pi*centerFreq*timeRange2);
-        
-        
-        
+
         modAmp = cosPlot2.* lowpassSignal;
         output = output + modAmp;
         
-         figure("Name", fileName);
-         plot(timeRange2, lowpassSignal);
-         title("Amplitude of Envelope");
-         xlabel("Time (s)");
-         ylabel("Amplitude");
+        figure("Name", fileName);
+        plot(timeRange2, lowpassSignal);
+        title("Amplitude of Envelope");
+        xlabel("Time (s)");
+        ylabel("Amplitude");
     end
     
-%     plot(timeRange2, output);
-%     title("Output Amplitude: Order 8");
-%     xlabel("Time (s)");
-%     ylabel("Amplitude");
+%   plot(timeRange2, output);
+%   title("Output Amplitude: Order 8");
+%   xlabel("Time (s)");
+%   ylabel("Amplitude");
     
     audiowrite('output3.wav',output, Fs);
     %for i=1:length(soundArray)
